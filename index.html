@@ -1,0 +1,90 @@
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Overwatch Team Builder</title>
+        <!--link rel="shortcut icon" href="http://www.pdsullivan.com/favicon.ico" type="image/x-icon" /-->
+
+        <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="lib/bootstrap/dist/css/sticky-footer-navbar.css"  media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="lib/site.css" media="screen" title="no title" charset="utf-8">
+    </head>
+    <body ng-controller="overwatchDataController">
+
+        <!-- Begin page content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="">
+                        <img src="lib/img/Overwatch_White.jpg" class="center-block" style="width:500px; height:auto;">
+                        <h1 class="text-center" style="margin-top:0; margin-bottom:50px;">Team Composer</h1>
+                    </div>
+                    <div ng-show="showSuggested">
+                        <h2 class="page-header">Suggested Composition</h2>
+                        <div class="row">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h4>{{ suggestedComp.score+" / 600 ("+((suggestedComp.score/600|number:2))*100+"%)" }}</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div ng-repeat="hero in suggestedComp.team">
+                                        <div class="col-sm-4" style="padding-bottom:10px;">
+                                            <h4 style="margin:0;margin-top:20px;">{{ hero.player+" ("+hero.hero+")" }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="page-header">Players</h2>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    </div>
+                                    <input type="text" ng-model="input_battleTag" class="form-control align-left" placeholder="Battle Tag">
+                                </div>
+                            </div>
+                            <button ng-click="addPlayer(input_battleTag)" type="submit" class="btn btn-primary col-sm-2">Add Player ({{ playerCount }}/6)</button>
+                        </div>
+                    </form>
+                    <div ng-repeat="player in team.players">
+                        <div class="row">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <div class="col-sm-3">
+                                        <h3 style="margin:0;">{{ player.battleTag }}</h3>
+                                	</div>
+                                    <div ng-repeat="hero in player.heroes | limitTo:3">
+                                        <div class="col-sm-3">
+                                            <h4 style="margin:0;margin-top:3px;">{{ hero.name+" ("+hero.win_percentage+")" }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <button ng-click="add6Players()" class="text-muted">Demo</button>
+            </div>
+        </footer>
+
+        <script src="lib/jquery/dist/jquery.min.js"></script>
+        <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="lib/angular/angular.min.js" charset="utf-8"></script>
+        <script src="app/app.js" charset="utf-8"></script>
+
+    </body>
+    </body>
+</html>
