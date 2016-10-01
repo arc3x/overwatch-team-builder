@@ -16,25 +16,42 @@ angular.module('app', [])
         $scope.dpsCount = 2;
         $scope.supportCount = 2;
 
+        $scope.loading = false;
+        $scope.loadingCount = 0;
+        function loadingOn() {
+            $scope.loadingCount += 1;
+            $scope.loading=true
+            console.log($scope.loadingCount);
+        }
+        function loadingOff() {
+            $scope.loadingCount -= 1;
+            if ($scope.loadingCount==0) {
+                $scope.loading=false
+            }
+            console.log($scope.loadingCount);
+        }
+
         $scope.add6Players = function() {
-            $scope.addPlayer("arco-1341");
-            $scope.addPlayer("cRc-1211");
-            $scope.addPlayer("Cheese-1219");
-            $scope.addPlayer("CrotalusX-1265");
-            $scope.addPlayer("Dragnier-1375");
-            $scope.addPlayer("Murdock-11667");
+            $scope.addPlayer("arco#1341");
+            $scope.addPlayer("cRc#1211");
+            $scope.addPlayer("Murdock#11667");
+            $scope.addPlayer("CrotalusX#1265");
+            $scope.addPlayer("Dragnier#1375");
+            $scope.addPlayer("dmertl#1373");
         }
 
         $scope.addPlayer = function(battleTag) {
+            loadingOn();
             // get api data
             $http({
                 method: 'GET',
-                url: "https://owapi.net/api/v3/u/"+battleTag+"/heroes"
+                url: "https://owapi.net/api/v3/u/"+battleTag.replace("#", "-")+"/heroes"
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
                 // error if team already has 6 players
                 if ($scope.playerCount == 6) {
+                    loadingOff();
                     alert("6 players already on team");
                     return;
                 }
@@ -48,11 +65,20 @@ angular.module('app', [])
                 } else if (response.data.us) {
                     heroes = response.data.us.heroes;
                 } else {
+                    loadingOff();
                     alert("no such player found ["+battleTag+"]");
                     return;
                 }
 
                 //FIXME: check if player is already in array
+                for (player in $scope.team.players) {
+                    //console.log(player.battleTag+"  "+battleTag);
+                    if ($scope.team.players[player].battleTag==battleTag) {
+                        loadingOff();
+                        alert("player ["+battleTag+"] already on team");
+                        return;
+                    }
+                }
 
                 // get all heroes (with win percentages) played more than two hours
                 var heroesSortedByWin = [];
@@ -60,7 +86,7 @@ angular.module('app', [])
                     if (heroes.playtime.competitive[hero] >= 2) {
                         for (heroStats in heroes.stats.competitive) {
                             if (hero==heroStats) {
-                                heroesSortedByWin.push({"name":hero, "win_percentage":(heroes.stats.competitive[hero].general_stats.win_percentage).slice(0,-1)});
+                                heroesSortedByWin.push({"name":hero, "win_percentage":(heroes.stats.competitive[hero].general_stats.win_percentage).slice(0,-1), "color":getColor(1-(heroes.stats.competitive[hero].general_stats.win_percentage).slice(0,-1)/100)});
                             }
                         }
                     }
@@ -81,23 +107,18 @@ angular.module('app', [])
                 $scope.playerCount++;
                 var player = {};
                 player[battleTag]=heroesSortedByWin;
-                $scope.team.players.push({battleTag:battleTag, heroes:heroesSortedByWin});
+                $scope.team.players.push({name: battleTag.substring(0, battleTag.lastIndexOf("#")), battleTag:battleTag, heroes:heroesSortedByWin});
+                console.log($scope.team.players);
                 // if 6 players on team, generate team comps
                 if ($scope.playerCount == 6) {
-                    genTeamComp();
-                    $scope.compositions.sort(function(a, b) {
-                        return parseFloat(b.score) - parseFloat(a.score);
-                    });
-                    console.log($scope.compositions[0]);
-                    console.log($scope.compositions[1]);
-                    console.log($scope.compositions[2]);
-                    $scope.suggestedComp = $scope.compositions[0];
-                    $scope.showSuggested = true;
+                    $scope.genTeamComp();
                 }
+                loadingOff();
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 //FIXME: get failed error code / remove. line below is for add6 testing function
+                loadingOff();
                 $scope.addPlayer(battleTag);
             });
 
@@ -106,6 +127,7 @@ angular.module('app', [])
 
         // populates scope.roles with requested role selection
         var genRolesArray = function () {
+            $scope.roles = [];
             var i;
             for (i = 0; i < $scope.tankCount; i++) {
                 $scope.roles.push("tank");
@@ -135,40 +157,55 @@ angular.module('app', [])
             return permute(inputArr);
         }
 
-        var genPlayersBestHeroForRole = function (player, role) {
+        var genPlayersBestHeroForRole = function (player, role, used) {
             for (hero in player.heroes) {
                 let r = genRole(player.heroes[hero].name);
-                if (role==r.role) {
+                if (role==r.role && used.indexOf(player.heroes[hero].name)==-1) {
                     return {name:player.heroes[hero].name, win_percentage:player.heroes[hero].win_percentage};
                 }
             }
             return {name:"n/a", win_percentage:0};
         }
 
+        //$scope.genTC = function() { genTeamComp(); }
 
-        //FIXME: catch double hero selection
-        var genTeamComp = function () {
+        $scope.genTeamComp = function () {
+            loadingOn();
+            $scope.compositions = [];
             genRolesArray();
             let playerPermutations = permutator($scope.team.players);
             let rolePermutations = permutator($scope.roles);
             for (playerCombo in playerPermutations) {
                 for (roleCombo in rolePermutations) {
                     var comp = {};
+                    var used = [];
                     comp.team = [];
                     var score = 0;
                     var i;
                     for (i=0; i<6; i++) {
-                        let hero = genPlayersBestHeroForRole(playerPermutations[playerCombo][i], rolePermutations[roleCombo][i]);
+                        let hero = genPlayersBestHeroForRole(playerPermutations[playerCombo][i], rolePermutations[roleCombo][i], used);
+                        used.push(hero.name);
                         score = parseFloat(score) + parseFloat(hero.win_percentage);
-                        comp.team.push({player:playerPermutations[playerCombo][i].battleTag, hero:hero.name});
+                        comp.team.push({player:playerPermutations[playerCombo][i].name, hero:hero.name});
                     }
                     comp.score = score;
                     $scope.compositions.push(comp);
                 }
             }
+            $scope.compositions.sort(function(a, b) {
+                return parseFloat(b.score) - parseFloat(a.score);
+            });
+            console.log($scope.compositions[0]);
+            $scope.suggestedComp = $scope.compositions[0];
+            $scope.showSuggested = true;
+            loadingOff();
         }
 
-
+        var getColor = function (value){
+            //value from 0 to 1
+            var hue=((1-value)*120).toString(10);
+            return ["hsl(",hue,",100%,50%)"].join("");
+        }
 
         var genRole = function(character) {
             switch(character) {
@@ -209,10 +246,7 @@ angular.module('app', [])
             }
         }
 
-        // sleep time expects milliseconds
-        function sleep (time) {
-          return new Promise((resolve) => setTimeout(resolve, time));
-        }
+
 
 
 }]);
