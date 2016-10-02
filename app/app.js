@@ -37,7 +37,7 @@ angular.module('app', [])
             $scope.addPlayer("Murdock#11667");
             $scope.addPlayer("CrotalusX#1265");
             $scope.addPlayer("Dragnier#1375");
-            $scope.addPlayer("dmertl#1373");
+            $scope.addPlayer("Hexcyclone#1148");
         }
 
         $scope.addPlayer = function(battleTag) {
