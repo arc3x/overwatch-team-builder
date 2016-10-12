@@ -40,6 +40,23 @@ angular.module('app', [])
             $scope.addPlayer("Hexcyclone#1148");
         }
 
+        $scope.removePlayer = function(battleTag) {
+            console.log($scope.team);
+            for (player in $scope.team.players) {
+                if ($scope.team.players[player].battleTag==battleTag) {
+                    delete $scope.team.players[player];
+                    $scope.team.players = $scope.team.players.filter(function (item) { return item != undefined });
+                    //$scope.team.players.length -= 1;
+                    //$scope.team.players.splice(player+1,player);
+                    $scope.playerCount -= 1;
+                    console.log($scope.team);
+                    return;
+                }
+            }
+            //$scope.$apply();
+        }
+
+
         $scope.addPlayer = function(battleTag) {
             loadingOn();
             // get api data
@@ -49,6 +66,7 @@ angular.module('app', [])
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
+
                 // error if team already has 6 players
                 if ($scope.playerCount == 6) {
                     loadingOff();
