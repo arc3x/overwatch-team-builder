@@ -46,14 +46,10 @@ angular.module('app', [])
                 if ($scope.team.players[player].battleTag==battleTag) {
                     delete $scope.team.players[player];
                     $scope.team.players = $scope.team.players.filter(function (item) { return item != undefined });
-                    //$scope.team.players.length -= 1;
-                    //$scope.team.players.splice(player+1,player);
                     $scope.playerCount -= 1;
-                    console.log($scope.team);
                     return;
                 }
             }
-            //$scope.$apply();
         }
 
 
