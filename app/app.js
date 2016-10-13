@@ -100,7 +100,7 @@ angular.module('app', ['ngCookies'])
                 }
                 //console.log($cookies.savedPlayers);
                 $scope.savedPlayers.push(battleTag);
-                $cookies.putObject("savedPlayers", $scope.savedPlayers, exp);
+                $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
                 console.log($cookies.getAll());
 
                 // get all heroes (with win percentages) played more than two hours
