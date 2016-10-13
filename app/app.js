@@ -95,6 +95,9 @@ angular.module('app', ['ngCookies'])
                 // save player for easy reuse
                 if ($scope.savedPlayers == null) {
                     $scope.savedPlayers = [];
+                    var now = new Date(), exp = new Date(now.getFullYear()+10, now.getMonth(), now.getDate());
+                    $scope.savedPlayers.push(battleTag);
+                    $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
                 }
                 for (player in $scope.savedPlayers) {
                     console.log($scope.savedPlayers[player]);
