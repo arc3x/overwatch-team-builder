@@ -1,11 +1,12 @@
-angular.module('app', [])
-    .controller('overwatchDataController', ['$scope','$http', function($scope,$http) {
+angular.module('app', ['ngCookies'])
+    .controller('overwatchDataController', ['$cookies', '$cookieStore', '$scope','$http', function($cookies,$cookieStore,$scope,$http) {
 
         $scope.playerCount = 0;
 
         $scope.team = {
             'players': []
         };
+        $scope.savedPlayers = $cookies.savedPlayers;
 
         $scope.showSuggested = false;
 
@@ -41,7 +42,6 @@ angular.module('app', [])
         }
 
         $scope.removePlayer = function(battleTag) {
-            console.log($scope.team);
             for (player in $scope.team.players) {
                 if ($scope.team.players[player].battleTag==battleTag) {
                     delete $scope.team.players[player];
@@ -69,7 +69,6 @@ angular.module('app', [])
                     alert("6 players already on team");
                     return;
                 }
-                console.log(response.data);
                 // get hero data; error if none
                 let heroes = {};
                 if (response.data.eu) {
@@ -84,15 +83,37 @@ angular.module('app', [])
                     return;
                 }
 
-                //FIXME: check if player is already in array
+                // check if player already on team
                 for (player in $scope.team.players) {
-                    //console.log(player.battleTag+"  "+battleTag);
                     if ($scope.team.players[player].battleTag==battleTag) {
                         loadingOff();
                         alert("player ["+battleTag+"] already on team");
                         return;
                     }
                 }
+
+                var now = new Date();
+                // this will set the expiration to 30 days
+                var exp = new Date(now.getFullYear(), now.getMonth()+1, now.getDate());
+
+                // Set the cookie
+                $cookies.put('token', 'fish', {expires: exp});
+
+                //This actually works!!
+                console.log("LOG"+$cookies.get('token'));
+
+                Cookies.set('name', 'value');
+                console.log(Cookies.get());
+
+                console.log($cookies.savedPlayers);
+                // save player for easy reuse
+                if ($cookies.savedPlayers == null) {
+                    $cookies.savedPlayers = [];
+                }
+                console.log($cookies.savedPlayers);
+                $cookies.savedPlayers.push(battleTag);
+                $scope.savedPlayers = $cookies.savedPlayers;
+                console.log($cookies.savedPlayers);
 
                 // get all heroes (with win percentages) played more than two hours
                 var heroesSortedByWin = [];
@@ -122,7 +143,6 @@ angular.module('app', [])
                 var player = {};
                 player[battleTag]=heroesSortedByWin;
                 $scope.team.players.push({name: battleTag.substring(0, battleTag.lastIndexOf("#")), battleTag:battleTag, heroes:heroesSortedByWin});
-                console.log($scope.team.players);
                 // if 6 players on team, generate team comps
                 if ($scope.playerCount == 6) {
                     $scope.genTeamComp();
