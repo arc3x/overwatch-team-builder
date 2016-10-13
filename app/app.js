@@ -92,15 +92,19 @@ angular.module('app', ['ngCookies'])
                     }
                 }
 
-                // Set the cookie
-                var now = new Date(), exp = new Date(now.getFullYear()+1, now.getMonth(), now.getDate());
-                // save player for easy reuse
-                if ($scope.savedPlayers == null) {
-                    $scope.savedPlayers = [];
+                for (player in $scope.savedPlayers) {
+                    if ($scope.savedPlayers[player]==battleTag) {                        
+                        break;
+                    }
+                    // save player for easy reuse
+                    var now = new Date(), exp = new Date(now.getFullYear()+10, now.getMonth(), now.getDate());
+                    if ($scope.savedPlayers == null) {
+                        $scope.savedPlayers = [];
+                    }
+                    $scope.savedPlayers.push(battleTag);
+                    $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
                 }
-                //console.log($cookies.savedPlayers);
-                $scope.savedPlayers.push(battleTag);
-                $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
+
                 console.log($cookies.getAll());
 
                 // get all heroes (with win percentages) played more than two hours
