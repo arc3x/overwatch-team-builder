@@ -6,7 +6,7 @@ angular.module('app', ['ngCookies'])
         $scope.team = {
             'players': []
         };
-        $scope.savedPlayers = $cookies.savedPlayers;
+        $scope.savedPlayers = $cookies.get("savedPlayers");
 
         $scope.showSuggested = false;
 
@@ -92,28 +92,17 @@ angular.module('app', ['ngCookies'])
                     }
                 }
 
-                var now = new Date();
-                // this will set the expiration to 30 days
-                var exp = new Date(now.getFullYear(), now.getMonth()+1, now.getDate());
-
                 // Set the cookie
-                $cookies.put('token', 'fish', {expires: exp});
-
-                //This actually works!!
-                console.log("LOG"+$cookies.get('token'));
-
-                Cookies.set('name', 'value');
-                console.log(Cookies.get());
-
-                console.log($cookies.savedPlayers);
+                var exp = new $window.Date(now.getFullYear(), now.getMonth()+6, now.getDate());
+                
                 // save player for easy reuse
-                if ($cookies.savedPlayers == null) {
-                    $cookies.savedPlayers = [];
+                if ($scope.savedPlayers == null) {
+                    $scope.savedPlayers = [];
                 }
-                console.log($cookies.savedPlayers);
-                $cookies.savedPlayers.push(battleTag);
-                $scope.savedPlayers = $cookies.savedPlayers;
-                console.log($cookies.savedPlayers);
+                //console.log($cookies.savedPlayers);
+                $scope.savedPlayers.push(battleTag);
+                $cookies.putObject("savedPlayers", $scope.savedPlayers, exp);
+                console.log($cookies.getAll());
 
                 // get all heroes (with win percentages) played more than two hours
                 var heroesSortedByWin = [];
