@@ -15,10 +15,26 @@
     <body ng-controller="overwatchDataController">
         <div class="loading" ng-show="loading">Loading&#8230;</div>
         <!-- Begin page content -->
-        <div class="container">
+        <div class="container-fluid" style="margin-top:50px;">
             <div class="row">
                 <div class="col-sm-2">
-                    {{ savedPlayers }}
+                    <div ng-repeat="player in savedPlayers">
+                        <div class="row" ng-show="$first">
+                            <div class="col-sm-12">
+                                <div class="btn btn-primary" style="width:90%; cursor:default;" disabled="disabled">
+                                    Recent Players
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button ng-click="addPlayer(player)" type="button" class="btn btn-labeled btn-success">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus"></i></span>
+                                    {{ player }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-8">
                     <div class="">

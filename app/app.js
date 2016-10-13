@@ -98,8 +98,6 @@ angular.module('app', ['ngCookies'])
                 }
                 var flag = true;
                 for (player in $scope.savedPlayers) {
-                    console.log($scope.savedPlayers[player]);
-                    console.log(battleTag);
                     if ($scope.savedPlayers[player]==battleTag) {
                         flag=false;
                     }
@@ -109,8 +107,6 @@ angular.module('app', ['ngCookies'])
                     $scope.savedPlayers.push(battleTag);
                     $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
                 }
-
-                console.log($cookies.getAll());
 
                 // get all heroes (with win percentages) played more than two hours
                 var heroesSortedByWin = [];
