@@ -97,7 +97,10 @@ angular.module('app', ['ngCookies'])
                     $scope.savedPlayers = [];
                 }
                 for (player in $scope.savedPlayers) {
+                    console.log($scope.savedPlayers[player]);
+                    console.log(battleTag);
                     if ($scope.savedPlayers[player]==battleTag) {
+                        console.log("BREAK");
                         break;
                     }
                     var now = new Date(), exp = new Date(now.getFullYear()+10, now.getMonth(), now.getDate());
