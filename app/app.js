@@ -93,9 +93,7 @@ angular.module('app', ['ngCookies'])
                 }
 
                 for (player in $scope.savedPlayers) {
-                    consol.log(player+"  "+$scope.savedPlayers[player])
                     if ($scope.savedPlayers[player]==battleTag) {
-                        alert("foo");
                         break;
                     }
                     // save player for easy reuse
