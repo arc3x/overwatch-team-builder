@@ -93,8 +93,7 @@ angular.module('app', ['ngCookies'])
                 }
 
                 // Set the cookie
-                var exp = new $window.Date(now.getFullYear(), now.getMonth()+6, now.getDate());
-                
+                var now = new Date(), exp = new Date(now.getFullYear()+1, now.getMonth(), now.getDate());
                 // save player for easy reuse
                 if ($scope.savedPlayers == null) {
                     $scope.savedPlayers = [];
