@@ -92,15 +92,15 @@ angular.module('app', ['ngCookies'])
                     }
                 }
 
+                // save player for easy reuse
+                if ($scope.savedPlayers == null) {
+                    $scope.savedPlayers = [];
+                }
                 for (player in $scope.savedPlayers) {
                     if ($scope.savedPlayers[player]==battleTag) {
                         break;
                     }
-                    // save player for easy reuse
                     var now = new Date(), exp = new Date(now.getFullYear()+10, now.getMonth(), now.getDate());
-                    if ($scope.savedPlayers == null) {
-                        $scope.savedPlayers = [];
-                    }
                     $scope.savedPlayers.push(battleTag);
                     $cookies.putObject("savedPlayers", $scope.savedPlayers, {'expires': exp});
                 }
