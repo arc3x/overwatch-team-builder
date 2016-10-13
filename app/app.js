@@ -6,7 +6,7 @@ angular.module('app', ['ngCookies'])
         $scope.team = {
             'players': []
         };
-        $scope.savedPlayers = $cookies.get("savedPlayers");
+        $scope.savedPlayers = $cookies.getObject("savedPlayers");
 
         $scope.showSuggested = false;
 
