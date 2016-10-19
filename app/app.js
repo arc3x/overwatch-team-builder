@@ -114,7 +114,8 @@ angular.module('app', ['ngCookies'])
                     if (heroes.playtime.competitive[hero] >= 2) {
                         for (heroStats in heroes.stats.competitive) {
                             if (hero==heroStats) {
-                                heroesSortedByWin.push({"name":hero, "win_percentage":(heroes.stats.competitive[hero].general_stats.win_percentage).slice(0,-1), "color":getColor(1-(heroes.stats.competitive[hero].general_stats.win_percentage).slice(0,-1)/100)});
+                                console.log(heroes.stats.competitive[hero]);
+                                heroesSortedByWin.push({"name":hero, "win_percentage":Math.round((heroes.stats.competitive[hero].general_stats.win_percentage*100)), "color":getColor(1-(heroes.stats.competitive[hero].general_stats.win_percentage))});
                             }
                         }
                     }
