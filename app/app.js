@@ -47,6 +47,9 @@ angular.module('app', ['ngCookies'])
                     delete $scope.team.players[player];
                     $scope.team.players = $scope.team.players.filter(function (item) { return item != undefined });
                     $scope.playerCount -= 1;
+                    if ($scope.playerCount<6) {
+                        $scope.showSuggested=false;
+                    }
                     return;
                 }
             }
@@ -214,7 +217,7 @@ angular.module('app', ['ngCookies'])
                         let hero = genPlayersBestHeroForRole(playerPermutations[playerCombo][i], rolePermutations[roleCombo][i], used);
                         used.push(hero.name);
                         score = parseFloat(score) + parseFloat(hero.win_percentage);
-                        comp.team.push({player:playerPermutations[playerCombo][i].name, hero:hero.name});
+                        comp.team.push({player:playerPermutations[playerCombo][i].name, hero:hero.name, role:genRole(hero.name)});
                     }
                     comp.score = score;
                     $scope.compositions.push(comp);
