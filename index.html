@@ -103,14 +103,14 @@
                             </tr>
                             <tr ng-show="showSuggested">
                                 <td colspan="3" class="text-center">
-                                    {{ suggestedComp.score+" / 600 ("+((suggestedComp.score/600|number:2))*100+"%)" }}
+                                    {{ "Team Score "+((suggestedComp.score/600)*100|number:0)+"/100" }}
                                 </td>
                             </tr>
                             <tr ng-show="showSuggested">
                                 <td style="border-top:none;" colspan="3" class="text-center"><button ng-click="genTeamComp()" class="btn btn-primary">Regen Comp</button></td>
                             </tr>
                         </table>
-                    </div>                    
+                    </div>
                     <h2 class="page-header">Players</h2>
                     <form class="form-horizontal">
                         <div class="form-group">
