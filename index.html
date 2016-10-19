@@ -157,11 +157,49 @@
             </div>
         </div>
 
-        <footer class="footer">
+        <footer class="footer" style="padding-top:10px;">
             <div class="container">
-                <button ng-click="add6Players()" class="text-muted">Demo</button>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <ul class="nav nav-pills">
+                            <li style="width:80%;" class="text-center"><a ng-click="add6Players()" href="#">Demo</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <ul class="nav nav-pills text-center">
+                            <li style="width:80%;" class="text-center"><a href="https://www.github.com/arc3x/overwatch-team-builder">GitHub</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <ul class="nav nav-pills text-center">
+                            <li style="width:80%;" class="text-center"><a href="#" data-toggle="modal" data-target="#about">About</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </footer>
+
+
+        <!-- About Popup -->
+        <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="about">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="aboutLabel">About Overwatch Composer</h4>
+                    </div>
+                    <div class="modal-body">
+                        Overwatch Composer is an open source project by <a href="https://arc3x.github.io">Matthew Slocum</a>.<br />
+                        Find the source on <a href="https://github.com/arc3x/overwatch-team-builder">github</a>.<br /><br />
+                        Found some bugs or have an idea? - use the <a href="https://github.com/arc3x/overwatch-team-builder/issues">github issue tracker</a> to let me know.<br /><br />
+                        Feel free to contribute to this project!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="lib/jquery/dist/jquery.min.js"></script>
         <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
