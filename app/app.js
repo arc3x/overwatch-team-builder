@@ -239,18 +239,22 @@ angular.module('app', ['ngCookies'])
         }
 
         var genRole = function(character) {
+            //console.log(character);
             switch(character) {
                 case "ana":
                 case "lucio":
                 case "mercy":
-                case "symmetra":
                 case "zenyatta":
                     return {"role":"support", "special":"n/a"};
                     break;
+                case "symmetra":
+                        return {"role":"support", "special":"dps"};
+                        break;
                 case "genji":
                 case "hanzo":
                 case "reaper":
                 case "tracer":
+                case "sombra":
                     return {"role":"dps", "special":"flanker"};
                     break;
                 case "mei":
