@@ -276,6 +276,7 @@ angular.module('app', ['ngCookies'])
                 case "roadhog":
                 case "winston":
                 case "zarya":
+                case "orisa":
                     return {"role":"tank", "special":"n/a"};
                     break;
             }
