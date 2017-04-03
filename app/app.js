@@ -38,7 +38,7 @@ angular.module('app', ['ngCookies'])
             $scope.addPlayer("LordHave#1939");
             $scope.addPlayer("CrotalusX#1265");
             $scope.addPlayer("Dragnier#1375");
-            $scope.addPlayer("Plumbot#1531");
+            $scope.addPlayer("Plumbot#1513");
         }
 
         $scope.removePlayer = function(battleTag) {
