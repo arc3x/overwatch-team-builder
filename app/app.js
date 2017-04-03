@@ -35,10 +35,10 @@ angular.module('app', ['ngCookies'])
         $scope.add6Players = function() {
             $scope.addPlayer("arco#1341");
             $scope.addPlayer("cRc#1211");
-            $scope.addPlayer("Murdock#11667");
+            $scope.addPlayer("LordHave#1939");
             $scope.addPlayer("CrotalusX#1265");
             $scope.addPlayer("Dragnier#1375");
-            $scope.addPlayer("Hexcyclone#1148");
+            $scope.addPlayer("Plumbot#1531");
         }
 
         $scope.removePlayer = function(battleTag) {
